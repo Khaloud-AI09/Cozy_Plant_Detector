@@ -17,16 +17,14 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-st.title("🌿 Cozy Plant Thirst Detector")
+st.title(" Cozy Plant Thirst Detector")
 st.write("Upload a photo of your green friend to see if it needs a drink!")
 
 # --- LOAD MODEL ---
 @st.cache_resource
 def load_my_model():
+    # Adding compile=False helps skip unnecessary checks
     return load_model("keras_model.h5", compile=False)
-
-model = load_my_model()
-class_names = open("labels.txt", "r").readlines()
 
 # --- IMAGE UPLOADER ---
 img_file = st.file_uploader("Choose a plant photo...", type=["jpg", "png", "jpeg"])
@@ -60,3 +58,4 @@ if img_file is not None:
     
 
     st.info(f"Confidence: {round(confidence_score * 100)}%")
+
