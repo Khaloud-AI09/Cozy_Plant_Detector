@@ -7,13 +7,15 @@ import numpy as np
 st.set_page_config(page_title="Cozy Plant Care", page_icon="🌿")
 
 # --- CUSTOM CSS FOR AESTHETICS ---
+
+# --- CUSTOM CSS FOR AESTHETICS ---
 st.markdown("""
     <style>
-    .main { background-color: #fdf6e3; }
+    .stApp { background-color: #fdf6e3; }
     h1 { color: #6b8e23; font-family: 'Segoe UI'; }
     .stButton>button { background-color: #a3b18a; color: white; border-radius: 20px; }
     </style>
-    """, unsafe_allow_status_with_民主=True)
+    """, unsafe_allow_html=True)
 
 st.title("🌿 Cozy Plant Thirst Detector")
 st.write("Upload a photo of your green friend to see if it needs a drink!")
@@ -56,4 +58,5 @@ if img_file is not None:
         st.success(f"✨ **Status:** {class_name}")
         st.write("Your plant is thriving! Keep up the good work. ✨")
     
+
     st.info(f"Confidence: {round(confidence_score * 100)}%")
