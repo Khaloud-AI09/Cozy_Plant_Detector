@@ -9,7 +9,7 @@ st.set_page_config(page_title=" Plant Care", page_icon="🪹")
 # 2. Aesthetic CSS
 st.markdown("""
     <style>
-    .stApp { background-color: #A5C89E; }
+    .stApp { background-color: #EBF4DD; }
     h1 { color: #5A7863; }
     .stCamera > div > div > button { background-color: #EBF4DD !important; color: white !important; }
     </style>
@@ -86,4 +86,5 @@ if img_file is not None and model is not None:
             st.write("Your plant is happy and healthy! ")
         
         st.caption(f"Confidence score: {round(confidence * 100)}%")
+
 
