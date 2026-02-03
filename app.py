@@ -4,14 +4,14 @@ from PIL import Image, ImageOps
 import numpy as np
 
 # 1. Page Config
-st.set_page_config(page_title=" Plant Care", page_icon="🌿")
+st.set_page_config(page_title=" Plant Care", page_icon="🪹")
 
 # 2. Aesthetic CSS
 st.markdown("""
     <style>
-    .stApp { background-color: #fdf6e3; }
-    h1 { color: #6b8e23; }
-    .stCamera > div > div > button { background-color: #a3b18a !important; color: white !important; }
+    .stApp { background-color: #A5C89E; }
+    h1 { color: #5A7863; }
+    .stCamera > div > div > button { background-color: #EBF4DD !important; color: white !important; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -78,11 +78,12 @@ if img_file is not None and model is not None:
 
         st.divider()
         if "Thirsty" in class_name:
-            st.error(f"✨ Status: {class_name}")
+            st.error(f" Status: {class_name}")
             st.write("Give it some water! 💧 Your plant is thirsty.")
         else:
-            st.success(f"✨ Status: {class_name}")
+            st.success(f" Status: {class_name}")
             st.balloons() 
-            st.write("Your plant is happy and healthy! ✨")
+            st.write("Your plant is happy and healthy! ")
         
         st.caption(f"Confidence score: {round(confidence * 100)}%")
+
