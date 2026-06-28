@@ -87,4 +87,54 @@ if img_file is not None and model is not None:
         
         st.caption(f"Confidence score: {round(confidence * 100)}%")
 
+st.title("🌱 Plant Care & Diagnostics")
+
+# 1. Capture the image
+image_file = st.camera_input("Take a picture of the plant to analyze")
+
+if image_file is not None:
+    # Open the image using Pillow so the AI can read it
+    img = Image.open(image_file)
+    
+    # Simple trigger button
+    if st.button("Analyze Plant Health & Care"):
+        with st.spinner(" Consulting the AI Botanist..."):
+            try:
+                # 2. Initialize client (grabs standard GEMINI_API_KEY from environment)
+                client = genai.Client()
+                
+                # 3. Prompt tailoring specific care instructions
+                prompt = """
+                Analyze this plant photo carefully. Provide a highly actionable, 
+                gardening-focused response under these exact Markdown headers:
+                
+                ### 🏷️ Plant Identity
+                Identify the exact common name and variety.
+                
+                ### 🏥 Health & Disease Report
+                Look closely at leaves, stems, and soil. Note if there are any signs of:
+                - Fungal/bacterial infections
+                - Pest infestations
+                - Nutrient deficiencies
+                If diseased, give step-by-step instructions to treat it.
+                
+                ### 💧 Optimal Watering Schedule
+                How often and exactly how much water does this specific plant prefer?
+                
+                ### 🪵 Manure & Fertilizer Guide
+                What specific type of manure or fertilizer does it love, how much should be applied, and at what frequency?
+                """
+                
+                # 4. Generate content using the multimodal flash model
+                response = client.models.generate_content(
+                    model='gemini-2.5-flash',
+                    contents=[img, prompt]
+                )
+                
+                # 5. Output cleanly format markdown
+                st.success("Analysis Complete!")
+                st.markdown(response.text)
+                
+            except Exception as e:
+                st.error(f"Something went wrong: {e}")
 
