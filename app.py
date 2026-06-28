@@ -2,9 +2,10 @@ import streamlit as st
 from tensorflow.keras.models import load_model
 from PIL import Image, ImageOps
 import numpy as np
+from google import genai  # ✅ Added missing import
 
 # 1. Page Config
-st.set_page_config(page_title=" Plant Care", page_icon="🪹")
+st.set_page_config(page_title="Plant Care", page_icon="🪹")
 
 # 2. Aesthetic CSS
 st.markdown("""
@@ -36,7 +37,7 @@ except FileNotFoundError:
     st.error("Missing labels.txt file!")
     class_names = []
 
-# 4. Camera and File Input
+# 4. Camera and File Input (Unified Input Section)
 st.write("### Snap a photo or upload one!")
 tab1, tab2 = st.tabs(["📸 Camera", "📁 Upload File"])
 
@@ -52,7 +53,7 @@ with tab2:
     if upload_img:
         img_file = upload_img
 
-# 5. Prediction Logic
+# 5. Prediction Logic (Your Keras Model)
 if img_file is not None and model is not None:
     image = Image.open(img_file).convert("RGB")
     
@@ -87,23 +88,22 @@ if img_file is not None and model is not None:
         
         st.caption(f"Confidence score: {round(confidence * 100)}%")
 
-st.title("🌱 Plant Care & Diagnostics")
+# 6. Advanced AI Diagnostics Section (Using the SAME image)
+st.divider()
+st.title("🌱 AI Plant Care & Diagnostics")
 
-# 1. Capture the image
-image_file = st.camera_input("Take a picture of the plant to analyze")
-
-if image_file is not None:
-    # Open the image using Pillow so the AI can read it
-    img = Image.open(image_file)
-    
-    # Simple trigger button
-    if st.button("Analyze Plant Health & Care"):
+if img_file is not None:
+    # Simple trigger button so it only runs when your dad clicks it
+    if st.button("🧠 Analyze Plant Health & Care"):
         with st.spinner(" Consulting the AI Botanist..."):
             try:
-                # 2. Initialize client (grabs standard GEMINI_API_KEY from environment)
+                # Re-open the unified file for Gemini API
+                img = Image.open(img_file)
+                
+                # Initialize client (grabs standard GEMINI_API_KEY from secrets/env)
                 client = genai.Client()
                 
-                # 3. Prompt tailoring specific care instructions
+                # Prompt tailoring specific care instructions
                 prompt = """
                 Analyze this plant photo carefully. Provide a highly actionable, 
                 gardening-focused response under these exact Markdown headers:
@@ -125,16 +125,17 @@ if image_file is not None:
                 What specific type of manure or fertilizer does it love, how much should be applied, and at what frequency?
                 """
                 
-                # 4. Generate content using the multimodal flash model
+                # Generate content using the multimodal flash model
                 response = client.models.generate_content(
                     model='gemini-2.5-flash',
                     contents=[img, prompt]
                 )
                 
-                # 5. Output cleanly format markdown
+                # Output cleanly format markdown
                 st.success("Analysis Complete!")
                 st.markdown(response.text)
                 
             except Exception as e:
                 st.error(f"Something went wrong: {e}")
-
+else:
+    st.info("Upload or snap a photo above to unlock full AI Care Diagnostics.")
