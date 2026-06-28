@@ -2,7 +2,7 @@ import streamlit as st
 from tensorflow.keras.models import load_model
 from PIL import Image, ImageOps
 import numpy as np
-from google import genai  # ✅ Added missing import
+from google import genai  # Added missing import
 
 # 1. Page Config
 st.set_page_config(page_title="Plant Care", page_icon="🪹")
